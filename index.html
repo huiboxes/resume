@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>简历</title>
     <link rel="stylesheet" href="./CSS/main.css">
+    <link rel="stylesheet" href="./CSS/loading.css">
     <script src="//at.alicdn.com/t/font_1658830_0tpyip87fyjd.js"></script>
     <style type="text/css">
       .icon {
@@ -16,15 +17,32 @@
     </style>
   </head>
   <body>
-      <div class="topNavBar"> 
+      <div class="site-welcome active" id="siteWelcome">
+        <div class="loading"></div>
+      </div>
+      <div class="topNavBar" id="topNavBar">
         <div class="topNavBar-inner clearFix">
           <a href="&" class="logo" alt="logo"><span class="logo-rs">RS</span><span class="logo-card">card</span></a>
           <nav>
               <ul class="clearFix">
-                  <li><a href="#">关于</a></li>
-                  <li><a href="#">技能</a></li>
-                  <li><a href="#">作品</a></li>
-                  <li><a href="#">博客</a></li>
+                  <li><a href="#siteAbout">关于</a></li>
+                  <li><a href="#siteSkills">技能</a></li>
+                  <li class="menuTigger">
+                    <a href="#siteWorks">作品</a>
+                    <ul class="submenu">
+                      <li>作品 1</li>
+                      <li>作品 2</li>
+                      <li>作品 3</li>
+                    </ul>
+                  </li>
+                  <li class="menuTigger">
+                    <a href="#">博客</a>
+                    <ul class="submenu">
+                      <li>博客 1</li>
+                      <li>博客 2</li>
+                      <li>博客 3</li>
+                    </ul>
+                  </li>
                   <li><a href="#">日历</a></li>
                   <li><a href="#">联系方式</a></li>
                   <li><a href="#">其它</a></li>
@@ -36,7 +54,7 @@
         <div class="mask"></div>
       </div>
       <main>
-        <div class="userCard">
+        <div class="userCard" id="siteAbout" data-x>
           <div class="pictureAndText clearFix">
             <div class="picture">
                 <img src="./image/avatar.jpg" width="299" height="347" alt="头像">
@@ -94,7 +112,7 @@
             技能： 前端开发、Node.js开发
         </p>
       </main>
-      <section class="skills">
+      <section class="skills" id="siteSkills" data-x>
         <h2>技能</h2>
         <ol class="clearFix">
           <li>
@@ -135,7 +153,7 @@
           </li>
         </ol>
       </section>
-      <section class="portfolio">
+      <section class="portfolio" id="siteWorks" data-x>
         <h2>作品集</h2>
         <nav>
           <ol class="clearFix">
@@ -171,5 +189,80 @@
         </div>
       </section>
     </nav>
+    <script>
+      //加载动画
+      setTimeout(()=>siteWelcome.classList.remove('active'),500)
+
+      //添加offset类
+      let specialTags = document.querySelectorAll('[data-x]')
+        for(let i = 0;i < specialTags.length;i++){
+          specialTags[i].classList.add('offset')
+        }
+      setTimeout(()=>{fundClosest()},500)
+      window.onscroll = function(){
+        //粘性导航栏
+        if(window.scrollY > 0){
+          topNavBar.classList.add('sticky')
+        }else{
+          topNavBar.classList.remove('sticky')
+        }
+        fundClosest()
+      }
+
+      function fundClosest(){
+        //滑动高亮a标签
+        let specialTags = document.querySelectorAll('[data-x]')
+        let minIndex = 0
+        for(let i = 0;i < specialTags.length;i++){
+          if(Math.abs(specialTags[i].offsetTop - window.scrollY) < Math.abs(specialTags[minIndex].offsetTop - window.scrollY)){
+            minIndex = i
+          }
+        }
+        //minIndex是离屏幕窗口顶部最近的元素
+        specialTags[minIndex].classList.remove('offset')
+        let id = specialTags[minIndex].id
+        let a = document.querySelector('a[href="#' + id + '"]')
+        let li = a.parentNode
+        let borthersAndme = li.parentNode.children
+        for(let i = 0;i < borthersAndme.length;i++){
+          borthersAndme[i].classList.remove('highLight')
+        }
+        li.classList.add('highLight')
+      }
+
+      //下拉菜单
+      let liTags = document.getElementsByClassName('menuTigger')
+      for(let i = 0;i < liTags.length;i++){
+        liTags[i].onmouseenter = function(x){
+          x.currentTarget.classList.add('active')
+        }
+        liTags[i].onmouseleave = function(x){
+          x.currentTarget.classList.remove('active')
+        }
+      }
+
+      //跳转到锚点 
+      let aTags = document.querySelectorAll('nav > ul > li > a')
+      for(let i=0;i < aTags.length;i++){
+        aTags[i].onclick = function(x){
+           x.preventDefault()
+           let top = document.querySelector(x.currentTarget.getAttribute('href')).offsetTop //离对应元素的距离
+           let n = 60 //一共动多少次
+           let t = 450 / n //多长时间动一次
+           let currentTop = window.scrollY //当前高度
+           let targetTop = top-70 //目标高度
+           let s = (targetTop - currentTop) / n//每一次走的距离
+           let i = 0
+           let id = setInterval(()=>{
+             if(i === n){
+               window.clearInterval(id)
+               return
+             }
+             i++
+             window.scrollTo(0,currentTop + s * i)
+           },t)
+        }
+      }
+    </script>
   </body>
 </html>
