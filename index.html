@@ -4,17 +4,9 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>简历</title>
+    <link href="https://cdn.bootcss.com/Swiper/4.5.1/css/swiper.min.css" rel="stylesheet">
     <link rel="stylesheet" href="./CSS/main.css">
-    <link rel="stylesheet" href="./CSS/loading.css">
     <script src="//at.alicdn.com/t/font_1658830_0tpyip87fyjd.js"></script>
-    <style type="text/css">
-      .icon {
-         width: 1em; height: 1em;
-         vertical-align: -0.15em;
-         fill: currentColor;
-         overflow: hidden;
-      }
-    </style>
   </head>
   <body>
       <div class="site-welcome active" id="siteWelcome">
@@ -23,7 +15,7 @@
       <div class="topNavBar" id="topNavBar">
         <div class="topNavBar-inner clearFix">
           <a href="&" class="logo" alt="logo"><span class="logo-rs">RS</span><span class="logo-card">card</span></a>
-          <nav>
+          <nav class="menu">
               <ul class="clearFix">
                   <li><a href="#siteAbout">关于</a></li>
                   <li><a href="#siteSkills">技能</a></li>
@@ -155,114 +147,31 @@
       </section>
       <section class="portfolio" id="siteWorks" data-x>
         <h2>作品集</h2>
-        <nav>
-          <ol class="clearFix">
-            <li id="portfolio1">所有</li>
-            <li id="portfolio2">框架</li>
-            <li id="portfolio3">原生JS &amp; CSS</li>
-          </ol>
-          <div class="bar state-1" id="portfolioBar">
-            <div class="bar-inner"></div>
+        <!-- Slider main container -->
+        <div id="mySlides">
+          <div class="swiper-container">
+            <!-- Additional required wrapper -->
+            <div class="swiper-wrapper">
+                <!-- Slides -->
+                <img src="./image/slides/slide-1.jpg" class="swiper-slide">
+                <img src="./image/slides/slide-2.jpg" class="swiper-slide">
+                <img src="./image/slides/slide-3.jpg" class="swiper-slide">
+            </div>
+            <!-- If we need pagination -->
+            <div class="swiper-pagination"></div>
+
           </div>
-        </nav>
-        <script>
-          portfolio1.onclick = function(){
-            portfolioBar.className = 'bar state-1'
-          }
-          portfolio2.onclick = function(){
-            portfolioBar.className = 'bar state-2'
-          }
-          portfolio3.onclick = function(){
-            portfolioBar.className = 'bar state-3'
-          }
-        </script>
-        <div class="works" style="height: 576px;">
-          <div class="big" style="top: 0;left: 0;">
-            <img src="./image/1.jpg" alt="">
-          </div>
-          <div class="small"  style="top: 0;right: 0;">
-            <img src="./image/2.jpg" alt="">
-          </div>
-          <div class="small" style="top: 298px;left: 645px;">
-            <img src="./image/3.jpg" alt="">
-          </div>
+          <div class="swiper-button-prev"></div>
+          <div class="swiper-button-next"></div>
         </div>
+
       </section>
-    </nav>
-    <script>
-      //加载动画
-      setTimeout(()=>siteWelcome.classList.remove('active'),500)
+      <script src="https://cdn.bootcss.com/Swiper/4.5.1/js/swiper.min.js"></script>
+      <script src="./js/init-swiper.js"></script>
+      <script src="./js/auto-slide-up.js"></script>
+      <script src="./js/sticky-topbar.js"></script>
+      <script src="./js/smoothly-navigation.js"></script>
 
-      //添加offset类
-      let specialTags = document.querySelectorAll('[data-x]')
-        for(let i = 0;i < specialTags.length;i++){
-          specialTags[i].classList.add('offset')
-        }
-      setTimeout(()=>{fundClosest()},500)
-      window.onscroll = function(){
-        //粘性导航栏
-        if(window.scrollY > 0){
-          topNavBar.classList.add('sticky')
-        }else{
-          topNavBar.classList.remove('sticky')
-        }
-        fundClosest()
-      }
-
-      function fundClosest(){
-        //滑动高亮a标签
-        let specialTags = document.querySelectorAll('[data-x]')
-        let minIndex = 0
-        for(let i = 0;i < specialTags.length;i++){
-          if(Math.abs(specialTags[i].offsetTop - window.scrollY) < Math.abs(specialTags[minIndex].offsetTop - window.scrollY)){
-            minIndex = i
-          }
-        }
-        //minIndex是离屏幕窗口顶部最近的元素
-        specialTags[minIndex].classList.remove('offset')
-        let id = specialTags[minIndex].id
-        let a = document.querySelector('a[href="#' + id + '"]')
-        let li = a.parentNode
-        let borthersAndme = li.parentNode.children
-        for(let i = 0;i < borthersAndme.length;i++){
-          borthersAndme[i].classList.remove('highLight')
-        }
-        li.classList.add('highLight')
-      }
-
-      //下拉菜单
-      let liTags = document.getElementsByClassName('menuTigger')
-      for(let i = 0;i < liTags.length;i++){
-        liTags[i].onmouseenter = function(x){
-          x.currentTarget.classList.add('active')
-        }
-        liTags[i].onmouseleave = function(x){
-          x.currentTarget.classList.remove('active')
-        }
-      }
-
-      //跳转到锚点 
-      let aTags = document.querySelectorAll('nav > ul > li > a')
-      for(let i=0;i < aTags.length;i++){
-        aTags[i].onclick = function(x){
-           x.preventDefault()
-           let top = document.querySelector(x.currentTarget.getAttribute('href')).offsetTop //离对应元素的距离
-           let n = 60 //一共动多少次
-           let t = 450 / n //多长时间动一次
-           let currentTop = window.scrollY //当前高度
-           let targetTop = top-70 //目标高度
-           let s = (targetTop - currentTop) / n//每一次走的距离
-           let i = 0
-           let id = setInterval(()=>{
-             if(i === n){
-               window.clearInterval(id)
-               return
-             }
-             i++
-             window.scrollTo(0,currentTop + s * i)
-           },t)
-        }
-      }
-    </script>
+    <div style="height: 200px;"></div>
   </body>
 </html>
