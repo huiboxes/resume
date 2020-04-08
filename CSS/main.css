@@ -408,3 +408,33 @@ section.message > ol > li{
   padding: 16px;
   border-bottom: 1px solid #d8d7d7;
 }
+
+.postMassageForm{
+  width: 700px;
+  margin: 50px auto;
+  display: flex;
+  justify-content: space-between;
+}
+
+.postMassageForm .msgName,.msgContent{
+  color: #345345;
+}
+
+
+
+.postMassageForm .msgName>input,.msgContent>input{
+  width: 260px;
+  padding: 7px 0px;
+  border: none;
+  border-radius: 5px;
+  padding-left: 5px;
+  box-shadow: 0 1px 5px 0 rgba(0, 0, 0, 0.15);
+}
+
+.postMassageForm .msgBtn{
+  -webkit-appearance: none;
+  border: 1px solid #d8d7d7;
+  color: #345345;
+  padding: 5px 10px;
+  box-shadow: 0 1px 2px rgba(0,0,0,0.3);;
+}

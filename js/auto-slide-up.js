@@ -4,7 +4,7 @@
         specialTags[i].classList.add('offset')
     }
 
-    setTimeout(() => { findClosestAndRemoveOffset() }, 500)
+    setTimeout(() => { findClosestAndRemoveOffset() }, 650)
     window.addEventListener('scroll', function (x) {
         findClosestAndRemoveOffset()
     })

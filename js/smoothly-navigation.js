@@ -1,10 +1,10 @@
 !function () {
-    var view = document.querySelector('nav.menu')
+    var view = View('nav.menu')
 
     var controller = {
         view: view,
         init: function () {
-            let view = this.view
+            this.view = view
             let aTags = view.querySelectorAll('nav > ul > li > a')
             for (let i = 0; i < aTags.length; i++) {
                 aTags[i].onclick = function (x) {
